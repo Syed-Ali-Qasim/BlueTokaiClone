@@ -1,0 +1,84 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "originalPrice": {
+      "type": "decimal"
+    },
+    "roastLevel": {
+      "type": "enumeration",
+      "enum": [
+        "Dark",
+        "Light", 
+        "Medium",
+        "Medium Dark"
+      ],
+      "required": true
+    },
+    "drinkingPreference": {
+      "type": "json",
+      "required": true
+    },
+    "flavourProfile": {
+      "type": "json", 
+      "required": true
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "hoverImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "inStock": {
+      "type": "boolean",
+      "default": true
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "products"
+    }
+  }
+}
