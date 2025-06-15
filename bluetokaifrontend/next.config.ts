@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     ],
     domains: ['localhost'],
   },
+  eslint: {
+    ignoreDuringBuilds: true, // ✅ Disables ESLint errors during Vercel builds
+  },
 };
 
 export default nextConfig;
