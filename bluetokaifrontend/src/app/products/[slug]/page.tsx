@@ -53,6 +53,57 @@ interface Product {
   }
 }
 
+// Add interface for the transformed product structure used by ProductPage
+interface TransformedProduct {
+  id: string
+  name: string
+  price: number
+  originalPrice?: number
+  images: string[]
+  description: string
+  size: string[]
+  grind: string[]
+  sweetness: number
+  body: number
+  acidity: number
+  bitterness: number
+  roast: string
+  flavour: string
+  altitude: string
+  processing: string
+  variety: string
+  sun: string
+  country: string
+  manufacturer: string
+  fssaiNumber: string
+  netQuantity: string
+  tastingNotes: string[]
+  brewGuide: {
+    time: string
+    coffee: string
+    water: string
+    temperature: string
+    grindSize: string
+  }
+  estate: {
+    name: string
+    location: string
+    description: string
+    area: string
+    altitude: string
+  }
+}
+
+// Add interface for related products
+interface RelatedProduct {
+  id: number
+  name: string
+  price: number
+  originalPrice?: number
+  images: string[]
+  soldOut: boolean
+}
+
 interface PageProps {
   params: Promise<{
     slug: string
@@ -350,7 +401,7 @@ export default function ProductPageRoute({ params }: PageProps) {
   }
 
   // Transform product data to match ProductPage component expectations
-  const transformedProduct = {
+  const transformedProduct: TransformedProduct = {
     id: product.id.toString(),
     name: product.attributes.name,
     price: product.attributes.price,
@@ -391,7 +442,7 @@ export default function ProductPageRoute({ params }: PageProps) {
   }
 
   // Transform related products for display
-  const transformedRelatedProducts = relatedProducts.map(item => ({
+  const transformedRelatedProducts: RelatedProduct[] = relatedProducts.map(item => ({
     id: item.id,
     name: item.attributes.name,
     price: item.attributes.price,
