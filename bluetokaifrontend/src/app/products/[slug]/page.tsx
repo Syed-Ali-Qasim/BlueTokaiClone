@@ -1,5 +1,3 @@
-'use client'
-
 import { useState, useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import ProductPage from '@/components/ProductPage'
