@@ -19,12 +19,14 @@
     "@strapi/plugin-cloud": "5.13.1",
     "@strapi/plugin-users-permissions": "5.13.1",
     "@strapi/strapi": "5.13.1",
+    "axios": "^1.10.0",
     "better-sqlite3": "11.3.0",
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
+    "strapi-plugin-import-export-content": "^0.4.2",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {

@@ -22,7 +22,6 @@ const LazyTestimonials = () => {
 
   return (
     <section className="py-16 bg-white relative overflow-hidden">
-      {/* Left Pattern - absolutely positioned at screen edge */}
       <div className="absolute left-0 top-0 z-0">
         <Image
           src="/Asset44-left_310x.png"
@@ -36,7 +35,6 @@ const LazyTestimonials = () => {
         />
       </div>
 
-      {/* Right Pattern - absolutely positioned at screen edge */}
       <div className="absolute right-0 top-0 z-0">
         <Image
           src="/Asset43-right_310x.png"
@@ -50,9 +48,7 @@ const LazyTestimonials = () => {
         />
       </div>
 
-      {/* Content Container */}
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header Row with Bird and Heading */}
         <div className="flex items-center justify-center mb-12">
           <div className="flex items-center space-x-2">
             <Image
@@ -70,7 +66,6 @@ const LazyTestimonials = () => {
           </div>
         </div>
 
-        {/* Testimonials */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="font-brandon flex flex-col justify-between text-center bg-orange-50 p-6 rounded-lg h-full">

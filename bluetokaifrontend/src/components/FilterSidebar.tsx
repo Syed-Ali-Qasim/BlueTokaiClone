@@ -34,7 +34,6 @@ export default function FilterSidebar({ filters, selectedFilters, onFilterChange
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 p-6 space-y-8">
-      {/* Roast Level */}
       <div>
         <h3 className="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wide">
           ROAST LEVEL
@@ -60,8 +59,6 @@ export default function FilterSidebar({ filters, selectedFilters, onFilterChange
         </div>
       </div>
 
-      {/* Drinking Preference - Multiple sections as shown in image */}
-      {/* Drinking Preference */}
 <div>
   <h3 className="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wide">
     DRINKING PREFERENCE
@@ -88,7 +85,6 @@ export default function FilterSidebar({ filters, selectedFilters, onFilterChange
 </div>
 
 
-      {/* Flavour Profile */}
       <div>
         <h3 className="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wide">
           FLAVOUR PROFILE

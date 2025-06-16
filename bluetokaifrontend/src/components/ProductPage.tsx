@@ -4,6 +4,8 @@ import React, { useState, useEffect, memo } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const RatingBars = memo(({ value, max = 4 }: { value: number; max?: number }) => (
   <div className="flex gap-1 justify-center">
@@ -231,10 +233,9 @@ const ProductPage: React.FC<ProductPageProps> = ({
 
   return (
     <div className="min-h-screen bg-white">
+      <Header/>
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Main Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Left Column - Product Images */}
           <div className="space-y-4">
             <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <OptimizedImage
@@ -266,7 +267,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
             )}
           </div>
 
-          {/* Right Column - Product Info */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-500 uppercase">{product.roast} Roast</span>
@@ -321,7 +321,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {/* Coffee Profile Section */}
         <div className="bg-yellow-50 py-12 px-8 mb-8">
           <div className="grid grid-cols-4 gap-8 max-w-4xl mx-auto">
             {coffeeProfiles.map((profile) => (
@@ -337,7 +336,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {/* Coffee Attributes & Tasting Notes */}
         <div className="bg-white py-12 px-8 mb-16">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -357,7 +355,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {/* Product Description */}
         <div className="bg-orange-50 rounded-lg p-8 mb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
@@ -382,7 +379,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {/* Estate Section */}
         <div className="mb-16">
           <div className="flex items-center gap-2 text-blue-400 text-sm font-light mb-2">
             <span>ESTATE</span><span>N° 76 4820 E</span>
@@ -393,7 +389,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
           <button className="border border-gray-400 px-6 py-2 text-sm hover:bg-gray-50 transition-colors uppercase">Visit the Farm</button>
         </div>
 
-        {/* Brew Guide Section */}
         <div className="mb-16">
           <div className="bg-orange-50 px-16 py-12">
             <div className="grid grid-cols-2 gap-16 max-w-6xl mx-auto">
@@ -435,7 +430,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {/* Related Products */}
         {(fetchedRelatedProducts.length > 0 || relatedProducts?.length > 0) && (
           <div>
             <h2 className="text-xl font-light mb-8">You May Also Like</h2>
@@ -459,6 +453,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   );
 };

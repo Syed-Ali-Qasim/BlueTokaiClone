@@ -7,11 +7,9 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
 
-// Lazy load components that are below the fold
 const LazyTestimonials = lazy(() => import('./LazyTestimonials'));
 const LazyVideoSection = lazy(() => import('./LazyVideoSection'));
 
-// Product interface matching ProductListingPage
 interface Product {
   id: number
   attributes: {
@@ -46,7 +44,6 @@ interface Product {
   }
 }
 
-// ProductService class copied from ProductListingPage
 class ProductService {
   private static cache = new Map<string, { data: any; timestamp: number }>()
   private static readonly CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
@@ -58,11 +55,9 @@ class ProductService {
   } = {}): Promise<Product[]> {
     const { limit, populate = true, filters } = options
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
-    
-    // Create cache key
+
     const cacheKey = `products_${JSON.stringify(options)}`
     
-    // Check cache first
     const cached = this.cache.get(cacheKey)
     if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
       return cached.data
@@ -73,7 +68,6 @@ class ProductService {
       if (populate) params.append('populate', '*')
       if (limit) params.append('pagination[limit]', limit.toString())
       
-      // Add filters
       if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
           if (Array.isArray(value)) {
@@ -91,8 +85,7 @@ class ProductService {
         headers: {
           'Content-Type': 'application/json',
         },
-        // Add cache control for browser caching
-        next: { revalidate: 300 } // 5 minutes
+        next: { revalidate: 300 }
       })
 
       if (!response.ok) {
@@ -101,8 +94,7 @@ class ProductService {
 
       const rawData = await response.json()
       const transformedProducts = this.transformProductData(rawData)
-      
-      // Cache the result
+
       this.cache.set(cacheKey, {
         data: transformedProducts,
         timestamp: Date.now()
@@ -156,7 +148,6 @@ class ProductService {
     })
   }
 
-  // Clear cache manually if needed
   static clearCache() {
     this.cache.clear()
   }
@@ -167,7 +158,6 @@ const Homepage = () => {
   const [bestsellerProducts, setBestsellerProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Carousel data
   const carouselSlides = [
     {
       id: 1,
@@ -211,41 +201,37 @@ const Homepage = () => {
     { title: "FREQUENCY", image: "/frequency_large.png" }
   ];
 
-  // Fetch bestseller products on component mount
   useEffect(() => {
     const fetchBestsellerProducts = async () => {
       try {
         setLoading(true);
-        // First try to fetch featured products
         let fetchedProducts = await ProductService.fetchProducts({
           limit: 4,
           populate: true,
           filters: { featured: true }
         });
 
-        // If we don't have 4 featured products, fetch additional products to make up the difference
         if (fetchedProducts.length < 4) {
           const additionalProducts = await ProductService.fetchProducts({
             limit: 4 - fetchedProducts.length,
             populate: true,
-            filters: { featured: false } // Get non-featured products to fill the gap
+            filters: { featured: false }
           });
           fetchedProducts = [...fetchedProducts, ...additionalProducts];
         }
 
-        // If still not enough, fetch any products without filters
         if (fetchedProducts.length < 4) {
           const allProducts = await ProductService.fetchProducts({
             limit: 4,
             populate: true
           });
-          fetchedProducts = allProducts.slice(0, 4); // Ensure we only get 4 products
+          fetchedProducts = allProducts.slice(0, 4);
         }
 
         setBestsellerProducts(fetchedProducts);
       } catch (error) {
         console.error('Error fetching bestseller products:', error);
-        // Final fallback: try to fetch any 4 products
+
         try {
           const fallbackProducts = await ProductService.fetchProducts({
             limit: 4,
@@ -254,7 +240,7 @@ const Homepage = () => {
           setBestsellerProducts(fallbackProducts);
         } catch (fallbackError) {
           console.error('Error fetching fallback products:', fallbackError);
-          setBestsellerProducts([]); // Set empty array if all attempts fail
+          setBestsellerProducts([]);
         }
       } finally {
         setLoading(false);
@@ -267,7 +253,7 @@ const Homepage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header/>
-      {/* Hero Carousel Section */}
+
       <section className="relative h-[300px] overflow-hidden">
         <div className="relative w-full h-full">
           {carouselSlides.map((slide, index) => (
@@ -291,7 +277,6 @@ const Homepage = () => {
             </div>
           ))}
           
-          {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-10"
@@ -324,7 +309,6 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Process Steps */}
       <section className="py-16 bg-yellow-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center space-x-8">
@@ -350,7 +334,6 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Press Your Way Section */}
       <section className="py-0">
         <div className="w-full h-[470px] relative">
           <Image
@@ -365,12 +348,11 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Bestseller Coffees */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="font-cormorant text-6xl font-regular text-start mb-12">Bestseller Coffees</h2>
           {loading ? (
-            // Loading skeleton with 4 cards and fixed height
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="animate-pulse">
@@ -397,7 +379,6 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* New to Specialty Coffee */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
@@ -430,7 +411,6 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Brew More Save More & Customization - Combined with Pattern Background */}
       <section className="relative">
         <div className="absolute inset-0">
           <Image
@@ -443,8 +423,7 @@ const Homepage = () => {
             sizes="100vw"
           />
         </div>
-        
-        {/* Brew More Save More */}
+
         <div className="relative z-10 py-16">
           <div className="container mx-auto px-4">
             <div className="bg-white rounded-lg pl-8 flex items-center justify-between">
@@ -487,7 +466,6 @@ const Homepage = () => {
           </div>
         </div>
 
-        {/* Customization Section */}
         <div className="relative z-10 pb-16">
           <div className="container mx-auto px-4 text-center">
             <h2 className="font-cormorant text-5xl mb-4 text-black">
@@ -518,12 +496,10 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Lazy loaded components */}
       <Suspense fallback={<div className="w-full h-96 bg-gray-100 animate-pulse" />}>
         <LazyVideoSection />
       </Suspense>
 
-      {/* Features Section - Full Width Image */}
       <section className="w-full h-[960px] relative">
         <Image
           src="/Group_6_1-change.png"
