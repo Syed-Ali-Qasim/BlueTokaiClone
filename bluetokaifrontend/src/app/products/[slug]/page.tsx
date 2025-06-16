@@ -54,9 +54,9 @@ interface Product {
 }
 
 interface PageProps {
-  params: Promise<{
+  params: {
     slug: string
-  }>
+  }
 }
 
 export default function ProductPageRoute({ params }: PageProps) {
@@ -64,12 +64,8 @@ export default function ProductPageRoute({ params }: PageProps) {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [slug, setSlug] = useState<string>('')
 
-  // Resolve params first
-  useEffect(() => {
-    params.then(({ slug }) => setSlug(slug))
-  }, [params])
+  const slug = params.slug
 
   useEffect(() => {
     if (!slug) return
