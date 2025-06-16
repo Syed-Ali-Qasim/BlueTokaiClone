@@ -9,7 +9,6 @@ import FilterSidebar from '@/components/FilterSidebar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-// Lazy load heavy components
 const YouMayAlsoLike = lazy(() => import('@/components/YouMayAlsoLike'))
 
 interface Product {
@@ -58,10 +57,9 @@ interface StrapiResponse {
   }
 }
 
-// Optimized API fetching with caching and error handling
 class ProductService {
   private static cache = new Map<string, { data: any; timestamp: number }>()
-  private static readonly CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
+  private static readonly CACHE_DURATION = 5 * 60 * 1000
 
   static async fetchProducts(options: {
     limit?: number
@@ -71,10 +69,8 @@ class ProductService {
     const { limit, populate = true, filters } = options
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
     
-    // Create cache key
     const cacheKey = `products_${JSON.stringify(options)}`
-    
-    // Check cache first
+
     const cached = this.cache.get(cacheKey)
     if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
       return cached.data
@@ -84,8 +80,7 @@ class ProductService {
       const params = new URLSearchParams()
       if (populate) params.append('populate', '*')
       if (limit) params.append('pagination[limit]', limit.toString())
-      
-      // Add filters
+
       if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
           if (Array.isArray(value)) {
@@ -103,8 +98,7 @@ class ProductService {
         headers: {
           'Content-Type': 'application/json',
         },
-        // Add cache control for browser caching
-        next: { revalidate: 300 } // 5 minutes
+        next: { revalidate: 300 }
       })
 
       if (!response.ok) {
@@ -168,17 +162,14 @@ class ProductService {
     })
   }
 
-  // Clear cache manually if needed
   static clearCache() {
     this.cache.clear()
   }
 }
 
-// Optimized Hero Banner Component with lazy loading
 function HeroBanner() {
   return (
     <div className="relative">
-      {/* Desktop banner */}
       <div className="hidden md:block">
         <Image 
           src="/Desktop_28.png" 
@@ -192,8 +183,7 @@ function HeroBanner() {
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Ss6RtOdw=="
         />
       </div>
-      
-      {/* Mobile banner */}
+
       <div className="block md:hidden">
         <Image 
           src="/Mobile_29.png" 
