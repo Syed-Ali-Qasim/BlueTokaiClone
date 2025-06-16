@@ -54,9 +54,9 @@ interface Product {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default function ProductPageRoute({ params }: PageProps) {
@@ -64,15 +64,27 @@ export default function ProductPageRoute({ params }: PageProps) {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [resolvedParams, setResolvedParams] = useState<{ slug: string } | null>(null)
+
+  // Resolve params first
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolved = await params
+      setResolvedParams(resolved)
+    }
+    resolveParams()
+  }, [params])
 
   useEffect(() => {
+    if (!resolvedParams) return
+
     const fetchProduct = async () => {
       try {
         setError(null)
         const baseUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
         
         // Fetch the specific product by slug with deep population
-        const productUrl = `${baseUrl}/api/products?populate[images][populate]=*&populate[hoverImage][populate]=*&filters[slug][$eq]=${params.slug}`
+        const productUrl = `${baseUrl}/api/products?populate[images][populate]=*&populate[hoverImage][populate]=*&filters[slug][$eq]=${resolvedParams.slug}`
         
         console.log('🔍 Fetching product from URL:', productUrl)
         
@@ -249,9 +261,9 @@ export default function ProductPageRoute({ params }: PageProps) {
     }
 
     fetchProduct()
-  }, [params.slug])
+  }, [resolvedParams])
 
-  if (loading) {
+  if (!resolvedParams || loading) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
