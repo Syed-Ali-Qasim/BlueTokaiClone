@@ -116,7 +116,7 @@ const Header = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <div className="flex items-center">
-                <Link href='http://localhost:3000/'>
+                <Link href="/">
                 <Image 
                   src="/logo-footer.png" 
                   alt="Blue Tokai Coffee Roasters" 
@@ -139,7 +139,7 @@ const Header = () => {
                   onMouseLeave={() => setHoveredItem(null)}
                 >
                   <a
-                    href={item.name === 'ROASTED COFFEE' ? 'http://localhost:3000/products' : 'http://localhost:3000/'}
+                    href={item.name === 'ROASTED COFFEE' ? '/products' : '/'}
                     className={`flex items-center space-x-1 py-2 text-sm font-medium transition-colors duration-200 ${
                       item.highlight 
                         ? 'text-red-600' 
@@ -165,7 +165,7 @@ const Header = () => {
                       {item.dropdownItems.map((dropdownItem, index) => (
                         <a
                           key={index}
-                          href={item.name === 'ROASTED COFFEE' ? 'http://localhost:3000/products' : 'http://localhost:3000/'}
+                          href={item.name === 'ROASTED COFFEE' ? '/products' : '/'}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors duration-200"
                         >
                           {dropdownItem}

@@ -1,18 +1,23 @@
+require('dotenv').config();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '1337',
+        protocol: process.env.NEXT_PUBLIC_STRAPI_PROTOCOL || 'https',
+        hostname: process.env.NEXT_PUBLIC_STRAPI_DOMAIN,
+        port: process.env.NEXT_PUBLIC_STRAPI_PORT || '', // leave empty for production
         pathname: '/uploads/**',
       },
     ],
-    domains: ['localhost'],
+    domains: [
+      process.env.NEXT_PUBLIC_STRAPI_DOMAIN,
+      'localhost', // include this explicitly for safety
+    ],
   },
   eslint: {
-    ignoreDuringBuilds: true, // ✅ This will now be respected by Vercel
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,

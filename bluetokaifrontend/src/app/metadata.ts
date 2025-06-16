@@ -26,14 +26,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://localhost'), // Replace with your actual domain
+  metadataBase: new URL('https://blue-tokai-clone-br77-cei2xj5t8-syed-ali-qasims-projects.vercel.app/'), // Replace with your actual domain
   alternates: {
     canonical: '/products',
   },
   openGraph: {
     title: 'Premium Coffee Beans Online | Blue Tokai Coffee',
     description: 'Buy freshly roasted coffee beans online from Blue Tokai. Premium single-origin and blended coffees, carefully sourced from India\'s finest farms.',
-    url: 'https://localhost/products', // Replace with your actual domain
+    url: 'https://blue-tokai-clone-br77-cei2xj5t8-syed-ali-qasims-projects.vercel.app/products', // Replace with your actual domain
     siteName: 'Blue Tokai Coffee',
     images: [
       {
