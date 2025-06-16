@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect, memo, lazy, Suspense } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';

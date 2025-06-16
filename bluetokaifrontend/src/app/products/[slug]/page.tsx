@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import ProductPage from '@/components/ProductPage'
@@ -52,9 +54,9 @@ interface Product {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default function ProductPageRoute({ params }: PageProps) {
@@ -65,8 +67,12 @@ export default function ProductPageRoute({ params }: PageProps) {
   const [slug, setSlug] = useState<string>('')
 
   useEffect(() => {
-  setSlug(params.slug)
-}, [params.slug])
+    const getSlug = async () => {
+      const resolvedParams = await params
+      setSlug(resolvedParams.slug)
+    }
+    getSlug()
+  }, [params])
 
   useEffect(() => {
     if (!slug) return
