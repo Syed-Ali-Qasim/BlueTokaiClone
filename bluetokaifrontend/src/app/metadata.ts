@@ -93,7 +93,7 @@ export function generateProductMetadata(product: any): Metadata {
           alt: productName,
         }
       ],
-      type: 'product',
+      type: 'website', // Changed from 'product' to 'website'
     },
     twitter: {
       card: 'summary_large_image',
