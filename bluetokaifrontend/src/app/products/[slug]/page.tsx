@@ -94,16 +94,6 @@ interface TransformedProduct {
   }
 }
 
-// Add interface for related products
-interface RelatedProduct {
-  id: number
-  name: string
-  price: number
-  originalPrice?: number
-  images: string[]
-  soldOut: boolean
-}
-
 interface PageProps {
   params: Promise<{
     slug: string
@@ -441,23 +431,13 @@ export default function ProductPageRoute({ params }: PageProps) {
     }
   }
 
-  // Transform related products for display
-  const transformedRelatedProducts: RelatedProduct[] = relatedProducts.map(item => ({
-    id: item.id,
-    name: item.attributes.name,
-    price: item.attributes.price,
-    originalPrice: item.attributes.originalPrice,
-    images: extractImageUrls(item.attributes.images),
-    soldOut: !item.attributes.inStock
-  }))
-
   console.log('🚀 Final transformed product for ProductPage:', JSON.stringify(transformedProduct, null, 2))
-  console.log('🚀 Final transformed related products:', JSON.stringify(transformedRelatedProducts, null, 2))
+  console.log('🚀 Final transformed related products:', JSON.stringify(relatedProducts, null, 2))
 
   return (
     <ProductPage 
       product={transformedProduct} 
-      relatedProducts={transformedRelatedProducts}
+      relatedProducts={relatedProducts}
     />
   )
 }
