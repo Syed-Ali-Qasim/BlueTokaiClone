@@ -64,8 +64,11 @@ export default function ProductPageRoute({ params }: PageProps) {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [slug, setSlug] = useState<string>('')
 
-  const slug = params.slug
+  useEffect(() => {
+  setSlug(params.slug)
+}, [params.slug])
 
   useEffect(() => {
     if (!slug) return
