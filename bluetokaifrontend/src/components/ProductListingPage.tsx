@@ -243,7 +243,6 @@ export default function ProductListingPage() {
     flavourProfile: ['Balanced', 'Bold and Bitter', 'Chocolatey and Nutty', 'Delicate and Complex']
   }
 
-  // Optimized product fetching with error handling and caching
   useEffect(() => {
     let isMounted = true
 
@@ -275,11 +274,8 @@ export default function ProductListingPage() {
     }
   }, [])
 
-  // Memoized filtered and sorted products to avoid unnecessary recalculations
   const filteredProducts = useMemo(() => {
     let filtered = [...products]
-
-    // Apply filters
     if (selectedFilters.roastLevel.length > 0) {
       filtered = filtered.filter(product => 
         product.attributes?.roastLevel && 
@@ -309,7 +305,6 @@ export default function ProductListingPage() {
       })
     }
 
-    // Apply sorting
     switch (sortBy) {
       case 'price-low':
         return filtered.sort((a, b) => (a.attributes?.price || 0) - (b.attributes?.price || 0))
@@ -337,7 +332,6 @@ export default function ProductListingPage() {
     }))
   }
 
-  // Error boundary component
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -358,8 +352,7 @@ export default function ProductListingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
-      {/* Optimized Hero Banner */}
+
       <HeroBanner />
       
       <div className="container mx-auto px-4 py-8">
@@ -392,7 +385,6 @@ export default function ProductListingPage() {
               </div>
             </div>
             
-            {/* Loading state with skeleton */}
             {loading ? (
               <ProductGridSkeleton />
             ) : (
@@ -415,8 +407,7 @@ export default function ProductListingPage() {
             )}
           </div>
         </div>
-        
-        {/* Bottom section - only render when not loading */}
+
         {!loading && (
           <div className="mt-16 bg-white rounded-lg p-8">
             <h3 className="text-xl font-semibold text-gray-900 mb-4">
@@ -429,7 +420,6 @@ export default function ProductListingPage() {
         )}
       </div>
 
-      {/* Lazy loaded You May Also Like Section */}
       {!loading && (
         <Suspense fallback={
           <div className="bg-white py-16">
@@ -454,7 +444,6 @@ export default function ProductListingPage() {
         </Suspense>
       )}
 
-      {/* Wave Strip - optimized image loading */}
       <div className="relative h-24 w-full overflow-hidden">
         <Image
           src="/recommened-bottom-img_1366x.png"
