@@ -5,9 +5,20 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.NEXT_PUBLIC_STRAPI_PROTOCOL || 'https',
-        hostname: process.env.NEXT_PUBLIC_STRAPI_DOMAIN,
-        port: process.env.NEXT_PUBLIC_STRAPI_PORT || '', // leave empty for production
+        protocol: 'https',
+        hostname: 'wonderful-authority-53f77a5deb.strapiapp.com',
+        port: process.env.NEXT_PUBLIC_STRAPI_PORT || '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'wonderful-authority-53f77a5deb.media.strapiapp.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '1337',
         pathname: '/uploads/**',
       },
     ],
