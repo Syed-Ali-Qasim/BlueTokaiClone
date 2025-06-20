@@ -95,14 +95,20 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   const mainImageUrl = getImageUrl(attributes.images)
   const hoverImageUrl = getHoverImageUrl(attributes.hoverImage) || mainImageUrl
 
-  const getFullImageUrl = (url: string | null): string => {
-    if (!url) return '/placeholder-image.jpg'
+const getFullImageUrl = (url: string | null): string => {
+  if (!url) return '/placeholder-image.jpg'
 
-    if (url.startsWith('http')) return url
+  if (url.startsWith('http')) return url
 
-    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
-    return `${baseUrl}${url}`
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
+  
+  if (baseUrl.includes('strapiapp.com') && !url.startsWith('/uploads')) {
+    const mediaUrl = baseUrl.replace('.strapiapp.com', '.media.strapiapp.com')
+    return `${mediaUrl}${url.startsWith('/') ? url : `/${url}`}`
   }
+  
+  return `${baseUrl}${url.startsWith('/') ? url : `/${url}`}`
+}
   
   const finalMainImage = getFullImageUrl(mainImageUrl)
   const finalHoverImage = getFullImageUrl(hoverImageUrl)
