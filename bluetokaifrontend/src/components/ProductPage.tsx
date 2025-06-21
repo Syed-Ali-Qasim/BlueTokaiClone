@@ -1,11 +1,13 @@
 'use client'
 
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, lazy, Suspense } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+
+const YouMayAlsoLike = lazy(() => import('@/components/YouMayAlsoLike'))
 
 const RatingBars = memo(({ value, max = 4 }: { value: number; max?: number }) => (
   <div className="flex gap-1 justify-center">
@@ -123,39 +125,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
   const [quantity, setQuantity] = useState(1);
   const [pincode, setPincode] = useState('');
   const [selectedBrewMethod, setSelectedBrewMethod] = useState('French Press');
-  const [fetchedRelatedProducts, setFetchedRelatedProducts] = useState<Product[]>([])
-  const [loadingRelated, setLoadingRelated] = useState(false)
-
-  useEffect(() => {
-    let isMounted = true
-
-    const fetchRelatedProducts = async () => {
-      try {
-        setLoadingRelated(true)
-        const baseUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
-        const response = await fetch(`${baseUrl}/api/products?populate=*&pagination[limit]=4`)
-        
-        if (response.ok) {
-          const data = await response.json()
-          if (isMounted && data?.data) {
-            setFetchedRelatedProducts(data.data)
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching related products:', error)
-      } finally {
-        if (isMounted) {
-          setLoadingRelated(false)
-        }
-      }
-    }
-
-    fetchRelatedProducts()
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
 
   if (!product) {
     return (
@@ -430,28 +399,25 @@ const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {(fetchedRelatedProducts.length > 0 || relatedProducts?.length > 0) && (
-          <div>
+        {/* Replace the old "You May Also Like" section with the lazy-loaded component */}
+        <Suspense fallback={
+          <div className="mb-16">
             <h2 className="text-xl font-light mb-8">You May Also Like</h2>
-            {loadingRelated ? (
-              <div className="grid grid-cols-4 gap-6">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-4 gap-6">
-                {(fetchedRelatedProducts.length > 0 ? fetchedRelatedProducts : relatedProducts)?.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                </div>
+              ))}
+            </div>
           </div>
-        )}
+        }>
+          <div className="mb-16">
+            <YouMayAlsoLike />
+          </div>
+        </Suspense>
       </div>
       <Footer/>
     </div>
